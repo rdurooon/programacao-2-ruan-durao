@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula de Validação</title>
+</head>
+<body>
+    <form method="post" id="emailForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <label for="confirmEmail">Confirm Email:</label>
+        <input type="email" id="confirmEmail" name="confirmEmail" required>
+        <p id="textError">text</p>
+        <br>
+        <button type="submit">Validate Emails</button>
+    </form>
+    <script>
+        document.getElementById('emailForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const confirmEmail = document.getElementById('confirmEmail').value;
+            const textoError = document.getElementById('textError')
+
+            // if (email !== confirmEmail) {
+            //     event.preventDefault();
+            //     alert('Emails do not match. Please check and try again.');
+            // }
+            fetch('http://localhost:3000/validateEmails', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, confirmEmail })
+            })
+            .then(response => {
+                textoError.innerText = "";
+                if(!response.ok){
+                    textoError.innerText = "Os emails não são iguais!";
+                }
+                return response.json()})
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while validating emails.');
+                textoError.innerText = "Os emails não são iguais!";
+            });
+        });
+    </script>
+</body>
+</html>
