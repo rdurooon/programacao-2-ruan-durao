@@ -1,52 +1,561 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aula de Validação</title>
+    <meta name="theme-color" content="#f5f7fb">
+    <title>Portal Aula</title>
+    <style>
+        :root {
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            color: #172033;
+            background: #f5f7fb;
+            font-synthesis: none;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --muted: #68738a;
+            --border: #e5e9f2;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-width: 320px;
+            min-height: 100vh;
+            margin: 0;
+            background:
+                radial-gradient(ellipse at 12% 8%, rgba(99, 102, 241, 0.1), transparent 34rem),
+                radial-gradient(ellipse at 92% 92%, rgba(14, 165, 233, 0.08), transparent 30rem),
+                #f5f7fb;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 28px 32px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 11px;
+            color: #172033;
+            font-size: 19px;
+            font-weight: 750;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 38px;
+            height: 38px;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 7px 16px rgba(79, 70, 229, 0.22);
+        }
+
+        .topbar-note {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(360px, 460px);
+            align-items: center;
+            gap: clamp(48px, 9vw, 128px);
+            width: min(1050px, calc(100% - 48px));
+            min-height: calc(100vh - 94px);
+            margin: 0 auto;
+            padding: 32px 0 72px;
+        }
+
+        .intro {
+            max-width: 480px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 0 22px;
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            width: 22px;
+            height: 2px;
+            background: currentColor;
+            content: "";
+        }
+
+        .intro h1 {
+            margin: 0;
+            font-size: clamp(38px, 5vw, 58px);
+            font-weight: 750;
+            letter-spacing: -2.5px;
+            line-height: 1.08;
+        }
+
+        .intro h1 span {
+            color: var(--primary);
+        }
+
+        .intro-copy {
+            max-width: 420px;
+            margin: 22px 0 0;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        .feature-list {
+            display: grid;
+            gap: 15px;
+            margin: 34px 0 0;
+            padding: 0;
+            color: #3b465c;
+            font-size: 14px;
+            list-style: none;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .feature-check {
+            display: grid;
+            width: 23px;
+            height: 23px;
+            place-items: center;
+            border: 1px solid #dfe1ff;
+            border-radius: 50%;
+            background: #eeefff;
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .panel {
+            width: 100%;
+            padding: 38px;
+            border: 1px solid rgba(229, 233, 242, 0.9);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.94);
+            box-shadow: 0 24px 70px rgba(28, 39, 68, 0.1);
+        }
+
+        .panel h2 {
+            margin: 0;
+            font-size: 25px;
+            font-weight: 700;
+            letter-spacing: -0.7px;
+        }
+
+        .panel-subtitle {
+            margin: 9px 0 28px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        form {
+            display: grid;
+            gap: 17px;
+        }
+
+        .field {
+            display: grid;
+            gap: 8px;
+        }
+
+        label {
+            color: #364157;
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+        input {
+            width: 100%;
+            height: 46px;
+            padding: 0 13px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            outline: none;
+            background: #fff;
+            color: #172033;
+            font: inherit;
+            font-size: 14px;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        input::placeholder {
+            color: #a0a8b8;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+        }
+
+        button {
+            min-height: 45px;
+            padding: 0 17px;
+            border: 0;
+            border-radius: 9px;
+            background: var(--primary);
+            color: #fff;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 650;
+            transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            background: var(--primary-dark);
+            box-shadow: 0 7px 15px rgba(79, 70, 229, 0.18);
+        }
+
+        button:focus-visible {
+            outline: 3px solid rgba(79, 70, 229, 0.3);
+            outline-offset: 3px;
+        }
+
+        form > button {
+            width: 100%;
+            margin-top: 3px;
+        }
+
+        .text-button {
+            min-height: auto;
+            margin: 18px 0 0;
+            padding: 4px 0;
+            background: transparent;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+        .text-button:hover {
+            transform: none;
+            background: transparent;
+            box-shadow: none;
+            color: var(--primary-dark);
+        }
+
+        .form-message {
+            margin: 0;
+            color: #b42318;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .form-message:empty {
+            display: none;
+        }
+
+        #dashboardWelcome {
+            margin: 10px 0 25px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        #dashboardActions {
+            display: grid;
+            gap: 11px;
+        }
+
+        #dashboardActions button {
+            min-height: 52px;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: #263149;
+            text-align: left;
+        }
+
+        #dashboardActions button:hover {
+            border-color: #c9c7ff;
+            background: #f8f8ff;
+            box-shadow: none;
+        }
+
+        #logoutButton {
+            width: 100%;
+            margin-top: 24px;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: #4b5568;
+        }
+
+        #logoutButton:hover {
+            background: #f8f9fc;
+            box-shadow: none;
+        }
+
+        @media (max-width: 760px) {
+            .topbar {
+                padding: 20px 24px;
+            }
+
+            main {
+                grid-template-columns: 1fr;
+                gap: 34px;
+                width: min(480px, calc(100% - 40px));
+                min-height: auto;
+                padding: 30px 0 52px;
+            }
+
+            .intro {
+                text-align: center;
+            }
+
+            .intro-copy {
+                margin-right: auto;
+                margin-left: auto;
+            }
+
+            .feature-list {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px 18px;
+                margin-top: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar {
+                padding: 17px 20px;
+            }
+
+            .topbar-note {
+                font-size: 11px;
+            }
+
+            main {
+                width: calc(100% - 32px);
+                padding-top: 22px;
+            }
+
+            .intro h1 {
+                font-size: 40px;
+            }
+
+            .intro-copy {
+                font-size: 14px;
+            }
+
+            .feature-list {
+                font-size: 12px;
+            }
+
+            .panel {
+                padding: 27px 22px;
+                border-radius: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <form method="post" id="emailForm">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <br>
-        <label for="confirmEmail">Confirm Email:</label>
-        <input type="email" id="confirmEmail" name="confirmEmail" required>
-        <p id="textError">text</p>
-        <br>
-        <button type="submit">Validate Emails</button>
-    </form>
+    <header class="topbar">
+        <a class="brand" href="#" aria-label="Portal Aula - início">
+            <span class="brand-mark">A</span>
+            <span>portal aula</span>
+        </a>
+        <span class="topbar-note">Um espaço para aprender e ensinar</span>
+    </header>
+    <main>
+        <section class="intro" aria-label="Apresentação">
+            <p class="eyebrow">Portal de aprendizagem</p>
+            <h1>Conhecimento que <span>conecta.</span></h1>
+            <p class="intro-copy">Acesse seu espaço de aprendizagem e encontre tudo o que precisa para acompanhar sua jornada.</p>
+            <ul class="feature-list">
+                <li><span class="feature-check">✓</span> Acesso por perfil</li>
+                <li><span class="feature-check">✓</span> Área personalizada</li>
+            </ul>
+        </section>
+        <section class="panel">
+        <section id="loginSection">
+            <h2>Boas-vindas</h2>
+            <p class="panel-subtitle">Entre com seus dados para acessar sua conta.</p>
+            <form id="loginForm">
+                <div class="field">
+                    <label for="loginEmail">E-mail</label>
+                    <input type="email" id="loginEmail" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
+                </div>
+                <div class="field">
+                    <label for="loginPassword">Senha</label>
+                    <input type="password" id="loginPassword" name="password" placeholder="Digite sua senha" autocomplete="current-password" required>
+                </div>
+                <p id="loginMessage" class="form-message" aria-live="polite"></p>
+                <button type="submit">Entrar</button>
+            </form>
+            <button type="button" id="showRegistration" class="text-button">Ainda não tem uma conta? Criar conta</button>
+        </section>
+        <section id="registrationSection" hidden>
+            <h2>Crie sua conta</h2>
+            <p class="panel-subtitle">Preencha os dados abaixo para se cadastrar.</p>
+            <form id="registrationForm">
+                <div class="field">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name" placeholder="Seu nome completo" autocomplete="name" required>
+                </div>
+                <div class="field">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
+                </div>
+                <div class="field">
+                    <label for="confirmEmail">Confirme o e-mail</label>
+                    <input type="email" id="confirmEmail" name="confirmEmail" placeholder="Digite o e-mail novamente" required>
+                </div>
+                <div class="field">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" placeholder="Mínimo de 8 caracteres" minlength="8" autocomplete="new-password" required>
+                </div>
+                <div class="field">
+                    <label for="confirmPassword">Confirme a senha</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Digite a senha novamente" autocomplete="new-password" required>
+                </div>
+                <p id="textError" class="form-message" aria-live="polite"></p>
+                <button type="submit">Cadastrar</button>
+            </form>
+            <button type="button" id="showLogin" class="text-button">Já tem uma conta? Voltar ao login</button>
+        </section>
+        <section id="dashboard" hidden>
+            <h2 id="dashboardTitle"></h2>
+            <p class="panel-subtitle">Seu espaço de aprendizagem está pronto.</p>
+            <p id="dashboardWelcome"></p>
+            <div id="dashboardActions"></div>
+            <button type="button" id="logoutButton">Sair</button>
+        </section>
+        </section>
+    </main>
     <script>
-        document.getElementById('emailForm').addEventListener('submit', function(event) {
+        const loginSection = document.getElementById('loginSection');
+        const registrationSection = document.getElementById('registrationSection');
+        const dashboard = document.getElementById('dashboard');
+        let sessionToken = '';
+        document.getElementById('showRegistration').addEventListener('click', function() {
+            loginSection.hidden = true;
+            registrationSection.hidden = false;
+        });
+        document.getElementById('showLogin').addEventListener('click', function() {
+            registrationSection.hidden = true;
+            loginSection.hidden = false;
+        });
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            const email = document.getElementById('email').value;
-            const confirmEmail = document.getElementById('confirmEmail').value;
-            const textoError = document.getElementById('textError')
-
-            // if (email !== confirmEmail) {
-            //     event.preventDefault();
-            //     alert('Emails do not match. Please check and try again.');
-            // }
-            fetch('http://localhost:3000/validateEmails', {
+            const formData = new FormData(event.target);
+            const user = Object.fromEntries(formData.entries());
+            const textoError = document.getElementById('textError');
+            textoError.innerText = '';
+            fetch('http://localhost:3000/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, confirmEmail })
+                body: JSON.stringify(user)
             })
-            .then(response => {
-                textoError.innerText = "";
-                if(!response.ok){
-                    textoError.innerText = "Os emails não são iguais!";
+            .then(async response => {
+                const data = await response.json();
+                if (!response.ok) {
+                    textoError.innerText = data.errors
+                        ? data.errors.map(error => error.message).join(' ')
+                        : data.message;
+                    return;
                 }
-                return response.json()})
-            .then(data => {
-                console.log(data);
+                textoError.innerText = data.message;
+                event.target.reset();
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred while validating emails.');
-                textoError.innerText = "Os emails não são iguais!";
+                textoError.innerText = 'Não foi possível concluir o cadastro.';
+            });
+        });
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const loginMessage = document.getElementById('loginMessage');
+            loginMessage.innerText = '';
+            fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(Object.fromEntries(formData.entries()))
+            })
+            .then(async response => {
+                const data = await response.json();
+                if (!response.ok) {
+                    loginMessage.innerText = data.errors
+                        ? data.errors.map(error => error.message).join(' ')
+                        : data.message;
+                    return;
+                }
+                sessionToken = data.token;
+                loginSection.hidden = true;
+                document.getElementById('dashboardTitle').innerText = 'Área do ' + data.user.perfil;
+                document.getElementById('dashboardWelcome').innerText = 'Bem-vindo(a), ' + data.user.name + '!';
+                const actions = document.getElementById('dashboardActions');
+                actions.replaceChildren();
+                const areas = {
+                    Administrador: ['Gerenciar usuários', 'Configurações do sistema'],
+                    Professor: ['Minhas turmas', 'Lançar notas'],
+                    Aluno: ['Minhas disciplinas', 'Minhas notas']
+                };
+                areas[data.user.perfil].forEach(label => {
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.innerText = label;
+                    actions.appendChild(button);
+                });
+                dashboard.hidden = false;
+                event.target.reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loginMessage.innerText = 'Não foi possível entrar no sistema.';
+            });
+        });
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            fetch('http://localhost:3000/logout', {
+                method: 'POST',
+                headers: { Authorization: 'Bearer ' + sessionToken }
+            })
+            .then(async response => {
+                if (!response.ok) {
+                    throw new Error('Não foi possível encerrar a sessão.');
+                }
+                sessionToken = '';
+                dashboard.hidden = true;
+                loginSection.hidden = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
         });
     </script>
